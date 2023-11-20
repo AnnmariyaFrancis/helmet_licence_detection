@@ -23,20 +23,20 @@ x = Dense(1024, activation='relu')(x)
 predictions = Dense(1, activation='sigmoid')(x)
 
 signal_detection_model = Model(inputs=signal_model.input, outputs=predictions)
-signal_detection_model.load_weights('signal.h5')
+signal_detection_model.load_weights('D:\DL_Projects\helmet_detection\signal.h5')
 
 # Load the helmet detection model
-helmet_cascade = cv2.CascadeClassifier(r'haarcascade_helmet.xml')
+helmet_cascade = cv2.CascadeClassifier(r'D:\DL_Projects\helmet_detection\haarcascade_helmet.xml')
 
 font = cv2.FONT_HERSHEY_SIMPLEX
 
 st.title("Combined Detection App")
 
 # Choose the section based on user input
-app_option = st.radio("Select an option:", ("Red Light Signal Violation Detection", "Helmet Detection and License Plate Extraction"))
+app_option = st.radio("Select an option:", ("Signal Violation Detection", "Helmet and License Plate Detection"))
 
-if app_option == "Red Light Signal Violation Detection":
-    st.title("Red Light Signal Violation Detection")
+if app_option == "Signal Violation Detection":
+    st.title("Signal Violation Detection")
 
     uploaded_image = st.file_uploader("Upload an image", type=["jpg", "jpeg", "png"])
 
@@ -56,8 +56,8 @@ if app_option == "Red Light Signal Violation Detection":
             st.image(uploaded_image, caption="No Signal Violation Detected", use_column_width=True)
             st.write("The model predicted no signal violation for the image")
 
-elif app_option == "Helmet Detection and License Plate Extraction":
-    st.title("Helmet Detection and License Plate Extraction")
+elif app_option == "Helmet and License Plate Detection":
+    st.title("Helmet and License Plate Detection app")
 
     uploaded_image = st.file_uploader("Upload an image", type=["jpg", "png", "jpeg"])
 
@@ -110,6 +110,8 @@ elif app_option == "Helmet Detection and License Plate Extraction":
                 res = cv2.rectangle(img, tuple(location[0][0]), tuple(location[2][0]), (0, 255, 0), 2)
                 plt.imshow(cv2.cvtColor(res, cv2.COLOR_BGR2RGB))
                 st.image(cv2.cvtColor(res, cv2.COLOR_BGR2RGB), use_column_width=True, caption="Image with Extracted License Plate and Text")
+
+
             else:
                 st.image(img, use_column_width=True, caption="No helmet and license plate is detected")
                 plt.imshow(img)
